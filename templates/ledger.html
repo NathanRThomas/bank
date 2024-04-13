@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ .Name }}'s Ledger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+      .top {
+        th, td {
+          padding: 5px;
+        }
+      }
+      .ledger {
+        tr:nth-child(even) {
+          background-color: #D6EEEE;
+        }
+
+        th, td {
+          padding: 15px;
+        }
+      }
+
+      
+    </style>
+  </head>
+
+  <body>
+    <div style="margin-top: 1em;">
+
+      <h1>{{ .Name }}'s Ledger</h1>
+      <table class="top">
+        <thead>
+          <th>Current Payoff</th>
+          <th>Min Payment</th>
+          <th>APR</th>
+        </thead>
+        <tbody>
+          <tr><td>{{ .PayoffAmount }}</td><td>{{ .MinPayment }}</td><td>{{ .Rake }}</td></tr>
+        </tbody>
+      </table>
+
+    </div> <!-- /container -->
+    <div style="margin-top: 2em;">
+      <table class="ledger">
+        <thead><th>Amount</th><th>Date</th><th>Description</th></thead>
+        <tbody>
+          {{ range .LineItems }}
+          <tr>
+            <td>{{ .TemplateAmount }}</td>
+            <td>{{ .TemplateDate }}</td>
+            <td>{{ .Note }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>
