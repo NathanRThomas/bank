@@ -41,7 +41,9 @@ func (this *app) routes() http.Handler {
 	// finally our actual handlers
 	r.HandleFunc("/version", this.versionGet) // for k8 health checks
 
-	r.Get("/{ledger}", this.getLedger) // generic endpoint
+	r.Get("/{ledger}", this.getLedger)
+
+	r.Post("/adjust/{ledger}", this.updateLedger)
 
 	return r
 }

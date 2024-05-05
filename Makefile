@@ -25,7 +25,7 @@ test:
 
 run: build
 run:
-	$(GOPATH)/bank
+	$(GOPATH)/bank -l=/var/www/go/bank
 
 deploy: build 
 deploy:
