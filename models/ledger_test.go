@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 	"github.com/stretchr/testify/assert"
+	"encoding/json"
 )
 
 func TestQALedgerPayoff1a (t *testing.T) {
@@ -126,4 +127,19 @@ func TestQALedgerPayoff1d (t *testing.T) {
 
 	assert.Equal (t, "$6548.24", pay)
 	assert.Equal (t, "$75.92", minPay)
+}
+
+// actual data
+func TestQALedgerPayoff2a (t *testing.T) {
+	ledge := &Ledger{}
+
+	// err := json.Unmarshal([]byte(`{"Rake":0.1,"LineItems":[{"Date":"2024-04-02T18:00:00Z","Note":"tie rod ends","Amount":12957},{"Date":"2024-04-05T18:00:00Z","Note":"Steering rack","Amount":350654},{"Date":"2024-05-09T10:25:20.912300258Z","Note":"Personal Loan","Amount":120000}],"MinPayment":"","PayoffAmount":"","Name":""}`), ledge)
+	err := json.Unmarshal([]byte(`{"Rake":0.1,"LineItems":[{"Date":"2024-04-02T18:00:00Z","Note":"tie rod ends","Amount":12957},{"Date":"2024-04-05T18:00:00Z","Note":"Steering rack","Amount":350654}],"MinPayment":"","PayoffAmount":"","Name":""}`), ledge)
+	if err != nil { t.Fatal(err) }
+
+	minPay, pay := ledge.Payoff()
+
+	t.Logf("min: %s :: payoff: %s\n", minPay, pay)
+
+
 }

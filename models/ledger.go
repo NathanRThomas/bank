@@ -42,12 +42,10 @@ func (this *Ledger) Payoff () (string, string) {
 
 	// loop through the line items
 	for idx, li := range this.LineItems {
-		// add to our running total, only if positive
-		if li.Amount > 0 {
+		if idx == 0 { 
 			cnt += float64(li.Amount) / 100
+			continue // nothing to compare it against
 		}
-
-		if idx == 0 { continue } // nothing to compare it against
 
 		// figure out how many days we're in we are
 		hoursBack := li.Date.Sub(this.LineItems[idx-1].Date).Hours()
@@ -56,11 +54,14 @@ func (this *Ledger) Payoff () (string, string) {
 		final := cnt * math.Pow(math.E, this.Rake * ((hoursBack / 24) / 365))
 		minPay += final - cnt 
 
+		// fmt.Println(idx, hoursBack, cnt, final, minPay)
+
 		cnt = final // keep the running total accurate
+
+		cnt += float64(li.Amount) / 100 
 
 		// now subtract the payment, if any
 		if li.Amount < 0 {
-			cnt += float64(li.Amount) / 100 
 			minPay = 0 // reset the min
 		}
 	}
@@ -72,6 +73,8 @@ func (this *Ledger) Payoff () (string, string) {
 	// we want this value as it's how we calculate the min payment
 
 	final := cnt * math.Pow(math.E, this.Rake * ((hoursBack / 24) / 365))
+
+	// fmt.Println("Last", hoursBack, cnt, final, minPay)
 
 	minPay += final - cnt
 
